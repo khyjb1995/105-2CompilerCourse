@@ -7,7 +7,7 @@
 
 ID  [A-Za-z][A-Za-z0-9]*
 DIG [0-9][0-9]*
-RNUM {DIG}'.'{DIG}
+RNUM {DIG}[.]{DIG}
 NQUO [^"]
 
 %%
@@ -38,7 +38,9 @@ REAL		{return lREAL;}
 ">="		{return lGE;}
 "<="		{return lLE;}
 
-// Identifiers, Integer numbers, Real numbers
+{ID}		{sscanf(yytext, "%s", name); return lID;}
+{DIG}		{sscanf(yytext, "%d", &ival); return lINUM;}
+{RNUM}		{sscanf(yytext, "%f", &rval); return lRNUM;}
 
 \"{NQUO}*\"	{sscanf(yytext,"%s", qstr); return lQSTR;}
 "/*"		{ BEGIN(C_COMMENT); }
